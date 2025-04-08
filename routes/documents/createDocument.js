@@ -1,5 +1,6 @@
 import express from 'express';
 import { supabaseClient } from '../../clients/supabase.js';
+import { publishBlogEvent } from '../../clients/rabbitmq.js';
 
 const router = express.Router();
 
@@ -57,6 +58,14 @@ router.post('/', async (req, res) => {
       console.error('Error inserting document:', error);
       return res.status(500).json({ error });
     }
+
+    await publishBlogEvent({
+      type: 'BLOG_CREATED',
+      documentId: data[0].id,
+      content,
+      title,
+      timestamp: new Date().toISOString(),
+    });
 
     return res.status(201).json({ id: data[0].id, title: data[0].title });
   } catch (err) {
