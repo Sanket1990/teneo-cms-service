@@ -1,5 +1,5 @@
 create table documents (
-  id bigserial primary key,
+  id uuid primary key default gen_random_uuid(),
   -- user_id uuid not null,
   title text not null,
   content text not null,

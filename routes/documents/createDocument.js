@@ -1,6 +1,6 @@
 import express from 'express';
 import { supabaseClient } from '../../clients/supabase.js';
-import { publishBlogEvent } from '../../clients/rabbitmq.js';
+import { publishCMSEvent } from '../../clients/rabbitmq.js';
 
 const router = express.Router();
 
@@ -59,8 +59,8 @@ router.post('/', async (req, res) => {
       return res.status(500).json({ error });
     }
 
-    await publishBlogEvent({
-      type: 'BLOG_CREATED',
+    await publishCMSEvent({
+      type: 'CMS_DOC_CREATED',
       documentId: data[0].id,
       content,
       title,
