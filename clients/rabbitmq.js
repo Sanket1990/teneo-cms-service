@@ -12,5 +12,8 @@ export const connectRabbitMQ = async () => {
 export const publishCMSEvent = async (event) => {
   if (!channel) throw new Error('RabbitMQ channel is not initialized');
   channel.sendToQueue('cms.documents', Buffer.from(JSON.stringify(event)));
-  console.log('Event published to cms.documents:', event.documentId);
+  console.log('Event published to cms.documents:', {
+    id: event.documentId,
+    type: event.type,
+  });
 };
